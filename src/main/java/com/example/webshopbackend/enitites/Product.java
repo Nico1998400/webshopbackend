@@ -16,16 +16,16 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productID;
 
-    @Column(nullable = false)
+    @Column()
     private String productName;
 
-    @Column(nullable = false)
+    @Column()
     private String productTitle;
 
-    @Column(nullable = false)
+    @Column()
     private String description;
 
-    @Column(nullable = false)
+    @Column()
     private int price;
 
     @Lob

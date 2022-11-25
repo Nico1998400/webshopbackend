@@ -22,5 +22,15 @@ public class ProductService {
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
+
+    public Product findById(int id) {
+        return productRepository.findById(id).orElseThrow();
+    }
+
+    public void deleteById(int id) {
+        productRepository.deleteById(id);
+    }
+
 }
+
 

@@ -11,14 +11,13 @@ import java.util.List;
 
 public class ProductController {
 
-
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @PostMapping
+    @PostMapping("/post")
     public Product product(@RequestBody Product product){
         return productService.addProduct(product);
     }
@@ -26,10 +25,18 @@ public class ProductController {
     @GetMapping
     public List<Product> findAll(){
         return productService.findAll();
-
     }
 
+    @GetMapping("/{id}")
+    public Product findById(@PathVariable int id) {
+        return productService.findById(id);
+    }
 
-
-
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable int id) {
+        productService.deleteById(id);
+    }
 }
+
+
+
