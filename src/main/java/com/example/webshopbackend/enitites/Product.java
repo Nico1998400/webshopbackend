@@ -26,14 +26,14 @@ public class Product {
     private String description;
 
     @Column()
-    private int price;
+    private Long price;
 
     @Lob
     @Column(name = "photo") // Måste lägga till i Jpa Repository hela produkt.
     private byte[] photo;
 
 
-    public Product(int productID, String productName, String productTitle, String description, int price, byte[] photo) {
+    public Product(int productID, String productName, String productTitle, String description, Long price, byte[] photo) {
         this.productID = productID;
         this.productName = productName;
         this.productTitle = productTitle;
@@ -74,11 +74,11 @@ public class Product {
         this.description = description;
     }
 
-    public int getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
