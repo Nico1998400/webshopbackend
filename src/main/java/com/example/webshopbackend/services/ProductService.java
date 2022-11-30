@@ -1,5 +1,6 @@
 package com.example.webshopbackend.services;
 
+import com.example.webshopbackend.dto.DtoRequest;
 import com.example.webshopbackend.enitites.Product;
 import com.example.webshopbackend.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,14 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public Product updateUserById(int id, DtoRequest dtoRequest) {
+        Product updateUser = productRepository.findById(id).orElseThrow();
+        updateUser.setProductName(dtoRequest.productName());
+        updateUser.setProductTitle(dtoRequest.productTitle());
+        updateUser.setDescription(dtoRequest.description());
+        updateUser.setPrice((long) dtoRequest.price());
+        return productRepository.save(updateUser);
+    }
 }
 
 

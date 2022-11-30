@@ -1,7 +1,9 @@
 package com.example.webshopbackend.controller;
 
+import com.example.webshopbackend.dto.DtoRequest;
 import com.example.webshopbackend.enitites.Product;
 import com.example.webshopbackend.services.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +37,14 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable int id) {
         productService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Product changeProductById(
+            @PathVariable int id,
+            @RequestBody DtoRequest product) {
+        return productService.updateUserById(id, product);
     }
 }
 
