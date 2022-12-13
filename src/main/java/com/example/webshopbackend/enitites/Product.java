@@ -26,20 +26,44 @@ public class Product {
     private String description;
 
     @Column()
+    private String details;
+
+    @Column()
+    private String size;
+
+    @Column()
     private Long price;
 
     @Lob
-    @Column(name = "photo") // Måste lägga till i Jpa Repository hela produkt.
-    private byte[] photo;
+    @Column() // Måste lägga till i Jpa Repository hela produkt.
+    private String photo;
 
 
-    public Product(int productID, String productName, String productTitle, String description, Long price, byte[] photo) {
+    public Product(String details, String size, int productID, String productName, String productTitle, String description, Long price, String photo) {
         this.productID = productID;
         this.productName = productName;
         this.productTitle = productTitle;
         this.description = description;
         this.price = price;
         this.photo = photo;
+        this.details = details;
+        this.size = size;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public String getSize() {
+        return size;
     }
 
     public int getProductID() {
@@ -82,13 +106,14 @@ public class Product {
         this.price = price;
     }
 
-    public byte[] getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(byte[] photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
-
 }
+
+
 
