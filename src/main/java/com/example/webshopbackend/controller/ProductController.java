@@ -6,6 +6,7 @@ import com.example.webshopbackend.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:3000/"})
@@ -26,7 +27,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findAll(){
+    public List<Product> findAll(Principal principal){
+        System.out.println(principal.getName());
         return productService.findAll();
     }
 

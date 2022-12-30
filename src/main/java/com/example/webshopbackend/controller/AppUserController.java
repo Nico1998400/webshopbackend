@@ -1,5 +1,7 @@
 package com.example.webshopbackend.controller;
 
+import com.example.webshopbackend.dto.UserDtoRequest;
+import com.example.webshopbackend.dto.UserDtoResponse;
 import com.example.webshopbackend.enitites.AppUser;
 import com.example.webshopbackend.services.AppUserService;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,8 @@ public class AppUserController {
     }
 
     @GetMapping
-    public List<AppUser> findAll(){
-        return appUserService.findAll();
+    public List<UserDtoResponse> findAll(@RequestParam(required = false, defaultValue = "") String usrcont){
+        return appUserService.findAll(usrcont);
     }
 
     @GetMapping("/{id}")
@@ -29,8 +31,8 @@ public class AppUserController {
     }
 
     @PostMapping("/post")
-    public AppUser appUser(@RequestBody AppUser appUser){
-        return appUserService.addAppUser(appUser);
+    public UserDtoResponse appUser(@RequestBody UserDtoRequest userDtoRequest){
+        return appUserService.addAppUser(userDtoRequest);
     }
 
 }

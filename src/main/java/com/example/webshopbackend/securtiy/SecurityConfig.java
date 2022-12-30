@@ -18,9 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
+    private JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService, JwtRequestFilter jwtRequestFilter) {
         this.userDetailsService = userDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Bean
@@ -30,15 +32,18 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-
-        httpSecurity
+            httpSecurity
                 .csrf().disable()
                 .authorizeRequests(auth -> auth
-                        .antMatchers("/api/product/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .antMatchers("/api/product/**", "/swagger-ui/**", "/v3/api-docs/**").authenticated()
                         .antMatchers("/api/appuser/**").permitAll()//hasAnyRole(Role.ADMIN.toString())
+                        .antMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated())
-                .userDetailsService(userDetailsService)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                    .userDetailsService(userDetailsService)
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        httpSecurity.addFilterBefore(jwtRequestFilter,
+                UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

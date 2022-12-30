@@ -3,14 +3,19 @@ package com.example.webshopbackend.enitites;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @Entity
-public class AppUser {
+public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,16 +25,25 @@ public class AppUser {
     private String username;
 
     @Column()
-    private String email;
-
-    @Column()
     private String password;
 
-    public AppUser(int id, String username, String email, String password) {
-        this.id = id;
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @Column
+    List<Role> roles;
+
+    public AppUser(String username, String password, List<Role> roles) {
         this.username = username;
-        this.email = email;
         this.password = password;
+        this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles
+                .stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString()))
+                .toList();
     }
 
     public int getId() {
@@ -38,10 +52,6 @@ public class AppUser {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public String getPassword() {
@@ -56,11 +66,36 @@ public class AppUser {
         this.username = username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + "\'" +
+                '}';
     }
 }
